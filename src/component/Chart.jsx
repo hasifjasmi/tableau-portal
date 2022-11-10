@@ -1,11 +1,16 @@
-import { useRef, useEffect } from "react";
-import { ImCross } from "@react-icons/all-files/fa/ImCross";
+import { useRef, useEffect, useState } from "react";
+import ricardo from "./c57.gif";
 
 const { tableau } = window;
 
-export default function Chart({ dashboard }) {
+export default function Chart({ dashboard, handleDelete }) {
   const ref = useRef(null);
 
+  // console.log("handle".handleDelete);
+  // swap function
+  const [swap, setSwap] = useState(true);
+
+  //
   useEffect(() => {
     const viz = new tableau.Viz(ref.current, `${dashboard}`, {
       hideToolbar: true,
@@ -15,28 +20,64 @@ export default function Chart({ dashboard }) {
     });
 
     // return viz; removing this seems to fix the problem lol.
-  });
+  }, []);
 
   return (
     <>
-      <div className="border-2 border-red-700 bg-white">
-        <div className="flex flex-row-reverse">
-          <button className="btn btn-square align-items-right">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-          <button className="btn btn-square">
-            <i class="fa-solid fa-repeat"></i>
-          </button>
-          <a
-            href="https://public.tableau.com/views/Book2_16662365125770/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link"
-            target="_blank"
+      <div className="flex flex-col w-[660px]">
+        {/* buttons */}
+        <div className="flex flex-row-reverse ">
+          <button
+            onClick={() => {
+              handleDelete(dashboard);
+            }}
+            className="btn btn-square align-items-right"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
+          {/* expand button */}
+          <a href={dashboard} target="_blank">
             <button className="btn btn-square">
-              <i class="fa-solid fa-expand"></i>
+              <i className="fa-solid fa-expand"></i>
             </button>
           </a>
+
+          {/* flip button */}
+          <button
+            onClick={() => {
+              setSwap(!swap);
+            }}
+            className="btn btn-square "
+          >
+            <i className="fa-solid fa-repeat"></i>
+          </button>
         </div>
-        <div ref={ref}></div>
+
+        <label
+          className={`swap ${swap ? "swap-active" : ""} swap-flip text-9xl`}
+        >
+          <div
+            className="border-2 border-red-700 bg-white swap-on w-[660px]"
+            ref={ref}
+          ></div>
+          <div className="flex border-2 border-red-700 bg-white swap-off">
+            <p className="text-base"> try test testing</p>
+          </div>
+        </label>
       </div>
     </>
   );
