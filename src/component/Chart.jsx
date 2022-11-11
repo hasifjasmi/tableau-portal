@@ -1,12 +1,10 @@
 import { useRef, useEffect, useState } from "react";
-import ricardo from "./c57.gif";
+// import ricardo from "./c57.gif";
 
 const { tableau } = window;
 
-export default function Chart({ dashboard, handleDelete }) {
+export default function Chart({ dashboard, height, width, dashboards, setDashboards }) {
   const ref = useRef(null);
-
-  // console.log("handle".handleDelete);
   // swap function
   const [swap, setSwap] = useState(true);
 
@@ -15,21 +13,22 @@ export default function Chart({ dashboard, handleDelete }) {
     const viz = new tableau.Viz(ref.current, `${dashboard}`, {
       hideToolbar: true,
       hideTabs: true,
-      height: "800px",
-      width: "650px",
+      height,
+      width,
     });
 
     // return viz; removing this seems to fix the problem lol.
-  }, []);
+  }, [dashboard, width, height]);
 
   return (
     <>
-      <div className="flex flex-col w-[660px]">
+      <div className="flex flex-col w-[660px] bg-base-100">
         {/* buttons */}
         <div className="flex flex-row-reverse ">
           <button
             onClick={() => {
-              handleDelete(dashboard);
+                console.log(dashboard);
+                setDashboards(dashboards.filter(dash=>dash !== dashboard));
             }}
             className="btn btn-square align-items-right"
           >
@@ -50,7 +49,7 @@ export default function Chart({ dashboard, handleDelete }) {
           </button>
 
           {/* expand button */}
-          <a href={dashboard} target="_blank">
+          <a href={dashboard}>
             <button className="btn btn-square">
               <i className="fa-solid fa-expand"></i>
             </button>
