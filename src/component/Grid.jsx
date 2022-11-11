@@ -20,7 +20,7 @@ export default function Grid({ dash }) {
           <Chart
             key={dashboard}
             dashboard={dashboard}
-            handleDelete={handleDelete}
+            // handleDelete={handleDelete}
           />
         ))}
       </div>
